@@ -12,11 +12,15 @@ const PORT = 522;
 
 const app = express();
 
+const productRouter = require('./routes/product');
+
 app.use(express.json());
 
 app.use(authRouter);
 
 app.use(adminRouter);
+
+app.use(productRouter);
 
 mangoose.connect(DBC).then(() => {
 
