@@ -6,6 +6,8 @@ const authRouter = require('./routes/auth');
 
 const adminRouter = require('./routes/admin');
 
+const userRouter = require('./routes/user');
+
 const DBC = "mongodb+srv://mon-souq:JwdGdfhwDhvqtmUB@cluster0.fiuh6ql.mongodb.net/?retryWrites=true&w=majority";
 
 const PORT = 522;
@@ -19,6 +21,8 @@ app.use(express.json());
 app.use(authRouter);
 
 app.use(adminRouter);
+
+app.use(userRouter);
 
 app.use(productRouter);
 
