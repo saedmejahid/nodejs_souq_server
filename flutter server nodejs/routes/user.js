@@ -56,7 +56,6 @@ userRouter.delete('/api/remove-from-cart/:id', auth, async (req, res) => {
                 }
                 break;
             }
-
         }
         user = await user.save();
         res.json(user);
