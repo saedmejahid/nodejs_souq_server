@@ -4,26 +4,25 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authRouter = express.Router();
 const myAuth = require('../components/my_auth');
-authRouter.post('/api/signup', async (req,res) => 
-{
-    try
-    {
-        const {name,email,password} = req.body;
-
-        const exisitingUser = await User.findOne({email});
-    
-        if(exisitingUser){
-            return res.status(400).json({msg:"Email Is already There,"});
+authRouter.post('/api/signup', async (req, res) =>  {
+    try {
+       const {name , email, password} = req.body;
+       
+        const exisitingUser = await User.findOne({ email });
+        if (exisitingUser) {
+           return res.status(400).json({msg: "Email is already there, "});
         }
-        const hPassword = await bcrypt.hash(password,8);
-        let user = new User({email,password:hPassword ,name});
-    
+   
+        const hPassword = await bcrypt.hash(password, 8);
+   
+        let user = new User({email, password: hPassword, name}); 
+   
         user = await user.save();
         res.json(user);
-    } catch(e){
-        res.status(500).json({error:e.message});
+    } catch (e) {
+       res.status(500).json({error: e.message});
     }
-});
+   });
 authRouter.post('/api/signin',async(req,res) => {
     try
     {
