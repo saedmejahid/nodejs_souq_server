@@ -64,4 +64,51 @@ adminRouter.get('/api/all-orders-admin', admin, async (req, res) => {
       res.status(500).json({error: e.message});
     }
   });
+  adminRouter.get('/admin/analytics', admin, async (req, res) => { 
+    try {
+      const orders = await Order.find({});
+      let totalSales = 0;
+  
+      for( let i = 0; i < orders.length; i++){
+        for( let j = 0; j < orders[i].products.length; j++){
+          totalSales += orders[i].products[j].product.price * orders[i].products[j].qty;
+        }
+      }
+  
+      const totalOrders = orders.length;
+      const totalProducts = await Product.find({}).countDocuments();
+      let catMobiles = await getCategoryTotalSale('Mobiles');
+      let catAppliances = await getCategoryTotalSale('Appliances');
+      let catFashion = await getCategoryTotalSale('Fashion');
+      let catEssentials = await getCategoryTotalSale('Essentials');
+      let catComputers = await getCategoryTotalSale('Computers');
+  
+      let totals = {
+        totalSales,
+        totalOrders,
+        totalProducts,
+        catMobiles,
+        catAppliances,
+        catFashion,
+        catEssentials,
+        catComputers
+      };
+  
+     res.json(totals);
+    } catch (e) { 
+      res.status(500).json({error: e.message});
+    }
+  });
+  
+  async function getCategoryTotalSale (category) {
+    const orders = await Order.find({ 'products.product.category':  category} );
+    let totalSales = 0;
+    for( let i = 0; i < orders.length; i++){
+      for( let j = 0; j < orders[i].products.length; j++){
+          totalSales += orders[i].products[j].product.price * orders[i].products[j].qty;
+      }
+    }
+    return totalSales;
+  }
+  
 module.exports = adminRouter;
