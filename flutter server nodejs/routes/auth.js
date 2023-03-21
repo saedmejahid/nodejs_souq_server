@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authRouter = express.Router();
 const myAuth = require('../components/my_auth');
+
 authRouter.post('/api/signup', async (req, res) =>  {
     try {
        const {name , email, password} = req.body;
